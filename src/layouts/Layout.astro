@@ -64,6 +64,14 @@ const { title, description } = Astro.props;
 
     <script>
       import "../scripts/motion";
+      import { appLinks } from "../data/site";
+
+      // "Апп татах" / "Зээл авах": straight to the right store on phones,
+      // otherwise keep #app (the hero's two store buttons)
+      const ua = navigator.userAgent;
+      const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS reports as Mac
+      const store = ios ? appLinks.ios : /Android/i.test(ua) ? appLinks.android : null;
+      if (store) document.querySelectorAll<HTMLAnchorElement>("[data-app-link]").forEach((a) => (a.href = store));
     </script>
   </body>
 </html>
