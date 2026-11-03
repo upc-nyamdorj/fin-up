@@ -1,0 +1,72 @@
+---
+import SectionHead from "./SectionHead.astro";
+import { products, fmt } from "../data/site";
+
+const looks = [
+  { card: "glass-green", tag: "Хурдан шийдэл", button: "btn-gloss" },
+  { card: "glass-blue", tag: "Их дүн, урт хугацаа", button: "glass hover:text-mint" },
+];
+---
+
+<section id="products" class="relative py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto w-[min(1180px,100%-32px)]">
+    <SectionHead eyebrow="Бүтээгдэхүүн">
+      <Fragment slot="title">ЗОРИЛГОДОО ТОХИРСОН<br />ҮСРЭЛТЭЭ ХИЙ</Fragment>
+      Богино болон урт хугацаат зээлийн нөхцөлийг харьцуулж, өөрт тохирохыг нь сонгоорой.
+    </SectionHead>
+
+    <div class="grid gap-6 lg:grid-cols-2" data-stagger data-spotlight-group>
+      {products.map((p, i) => {
+        const rows = [
+          { label: "Хэмжээ", value: `${fmt(p.min)} – ${fmt(p.max)}` },
+          { label: "Хугацаа", value: `${p.terms.join(", ")} сар` },
+          { label: "Хүү", value: `${p.rate}%` },
+          { label: "Шимтгэл", value: `${p.fee}%` },
+        ];
+        return (
+          <article data-product-card class:list={["spotlight group relative flex flex-col overflow-hidden rounded-[32px] p-7 transition duration-500 hover:-translate-y-1 sm:p-10", looks[i].card]} data-reveal>
+            <span class="pointer-events-none absolute -right-24 -bottom-24 size-72 rounded-full bg-mint/15 blur-[90px] transition-transform duration-1000 group-hover:-translate-x-24"></span>
+
+            <span class="mb-5 inline-flex items-center gap-2 self-start rounded-full border border-mint/20 bg-mint/10 px-3 py-1 text-xs font-semibold text-mint">
+              <b class="size-1.5 rounded-full bg-mint animate-blink"></b>{looks[i].tag}
+            </span>
+            <h3 class="text-[28px] leading-tight font-bold tracking-[-.02em]">{p.name}</h3>
+
+            <span class="mt-6 text-sm text-muted">Дээд хэмжээ</span>
+            <div data-max={p.max} class="font-display text-[clamp(36px,4.4vw,52px)] font-extrabold tracking-[-.03em] tabular-nums bg-linear-to-r from-white to-mint bg-clip-text text-transparent">0₮</div>
+
+            <dl class="mt-6 mb-8 divide-y divide-white/10 border-y border-white/10">
+              {rows.map((r) => (
+                <div class="flex items-center justify-between gap-4 py-3.5 transition-[padding] duration-300 hover:px-2">
+                  <dt class="text-sm text-muted">{r.label}</dt>
+                  <dd class="text-right font-display font-semibold tabular-nums">{r.value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <a data-magnetic href="#calc" data-pick={p.key} class:list={["group/btn mt-auto inline-flex items-center gap-2.5 self-start rounded-full px-[26px] py-3.5 font-display font-semibold transition", looks[i].button]}>
+              Тооцоолох
+              <svg class="size-4 transition-transform group-hover/btn:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6" /></svg>
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, reduce } from "../scripts/motion";
+  import { fmt } from "../data/site";
+
+  // max amount counts up when each card is revealed
+  document.querySelectorAll<HTMLElement>("[data-product-card]").forEach((card) => {
+    const el = card.querySelector<HTMLElement>("[data-max]")!;
+    const target = Number(el.dataset.max);
+    if (reduce) return void (el.textContent = fmt(target));
+    card.addEventListener("reveal", () => {
+      const n = { v: 0 };
+      gsap.to(n, { v: target, duration: 1.8, delay: 0.3, ease: "power3.out", onUpdate: () => (el.textContent = fmt(Math.round(n.v / 1000) * 1000)) });
+    });
+  });
+</script>

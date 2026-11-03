@@ -1,0 +1,36 @@
+---
+import SectionHead from "./SectionHead.astro";
+
+const features = [
+  { title: "Хурдацтай шийдэл", tagline: "Цаг алдалгүй үсэр", icon: "M13 2 4 14h7l-1 8 9-12h-7z" },
+  { title: "Барьцаагүй боломж", tagline: "Хязгаарыг дав", icon: "M7 11V7a5 5 0 0 1 9.9-1M5 11h14v10H5zM12 15v2" },
+  { title: "Ухаалаг төлөвлөлт", tagline: "Ил тод өсөлт", icon: "M3 3v18h18M7 15l4-4 3 3 6-6M15 8h5v5" },
+  { title: "Найдвартай хамгаалалт", tagline: "Аюулгүй байдал", icon: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zm-3-10 2 2 4-4" },
+];
+---
+
+<section id="features" class="relative py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto w-[min(1180px,100%-32px)]">
+    <SectionHead eyebrow="Давуу тал">
+      <Fragment slot="title">Яагаад FinUp<br />гэж?</Fragment>
+    </SectionHead>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger data-spotlight-group>
+      {features.map((f, i) => (
+        <div class="spotlight glass group relative flex flex-row items-center gap-5 overflow-hidden rounded-[28px] px-6 py-6 sm:min-h-[260px] sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-9 transition-transform duration-500 hover:-translate-y-1" data-reveal>
+          <span class="pointer-events-none absolute -top-20 -right-20 size-40 rounded-full bg-mint/0 blur-3xl transition-colors duration-500 group-hover:bg-mint/15"></span>
+          <span class="absolute top-7 right-7 hidden font-display sm:block text-sm font-bold text-white/15 tabular-nums transition-colors duration-500 group-hover:text-mint">0{i + 1}</span>
+          <div class="glass-green grid size-14 shrink-0 place-items-center rounded-2xl sm:mb-auto transition duration-500 group-hover:rotate-[8deg] group-hover:scale-110">
+            <svg class="draw size-6" viewBox="0 0 24 24" fill="none" stroke="var(--color-mint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={f.icon} pathLength="1" /></svg>
+          </div>
+          <div class="sm:mt-8">
+            <h3 class="mb-1.5 text-lg font-bold tracking-[-.01em]">{f.title}</h3>
+            <p class="flex items-center gap-2 text-mint">
+              <span class="h-px w-5 bg-mint/60 transition-[width] duration-500 group-hover:w-9"></span>{f.tagline}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

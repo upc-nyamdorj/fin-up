@@ -1,0 +1,29 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Marquee from "../components/Marquee.astro";
+import Products from "../components/Products.astro";
+import Features from "../components/Features.astro";
+import Calculator from "../components/Calculator.astro";
+import Faq from "../components/Faq.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="FinUp — Санхүүдээ үсрэлт хийе"
+  description="Хуучин хэмнэлдээ баригдалгүйгээр хүссэн оргил, шинэ боломж өөд зоригтой үсрээрэй. FinUp — богино болон урт хугацаат дижитал зээл."
+>
+  <Nav />
+  <Hero />
+  <Marquee />
+  <main>
+    <Products />
+    <Features />
+    <Calculator />
+    <Faq />
+    <HowItWorks />
+  </main>
+  <Footer />
+</Layout>

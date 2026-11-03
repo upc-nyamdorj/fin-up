@@ -1,0 +1,127 @@
+---
+import { products, fmt } from "../data/site";
+
+const initial = products[1];
+const chipBase = "glass rounded-full px-4.5 py-2.5 font-display text-sm font-semibold transition-colors duration-300";
+const chipOn = "data-[on]:btn-gloss data-[on]:scale-110 data-[on]:border-mint transition-transform";
+---
+
+<section id="calc" class="relative py-16 sm:py-20 lg:py-24">
+  <div class="mx-auto w-[min(1180px,100%-32px)]">
+    <div class="spotlight glass-blue grid items-center gap-12 rounded-[36px] p-5.5 sm:p-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-14 lg:p-14" data-reveal>
+      <div>
+        <span class="flex items-center gap-3 text-xs font-semibold tracking-[.2em] text-mint uppercase"><span class="h-px w-8 bg-mint/60"></span>Зээлийн тооцоолуур</span>
+        <h2 data-split class="mt-3.5 mb-3 text-[clamp(30px,4vw,48px)] font-bold leading-[1.1] tracking-[-.03em]">Төлөвлө Тэмүүл</h2>
+        <p class="mb-9 text-muted">Төлөх дүнгээ урьдчилан тооцож санхүүгээ төлөвлөөрөй.</p>
+
+        <div id="segment" data-active={initial.key} class="group/seg glass relative mb-8 grid grid-cols-2 rounded-full p-1.5" role="tablist">
+          <span class="btn-gloss pointer-events-none absolute inset-y-1.5 left-1.5 w-[calc(50%-6px)] rounded-full transition-transform duration-500 ease-[cubic-bezier(.34,1.3,.64,1)] group-data-[active=long]/seg:translate-x-full"></span>
+          {products.map((p) => (
+            <button type="button" role="tab" data-product={p.key} data-on={p.key === initial.key ? "" : undefined} class="relative z-10 rounded-full px-3 py-3 font-display text-sm font-semibold text-muted transition-colors duration-500 data-[on]:text-forest">
+              {p.name.replace(" зээл", "")}<span class="hidden sm:inline"> зээл</span>
+            </button>
+          ))}
+        </div>
+
+        <label for="amt" class="mb-3 flex justify-between text-sm text-muted">Зээлийн хэмжээ <b id="amt-out" class="font-display text-lg text-ink tabular-nums">{fmt(initial.max)}</b></label>
+        <input type="range" id="amt" min={initial.min} max={initial.max} step={initial.step} value={initial.max} />
+        <div class="mt-2 mb-8 flex justify-between text-xs text-muted tabular-nums"><span id="amt-min">{fmt(initial.min)}</span><span id="amt-max">{fmt(initial.max)}</span></div>
+
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <span class="mb-3 block text-sm text-muted">Хугацаа (сараар)</span>
+            <div id="terms" class="flex gap-2">
+              {initial.terms.map((t, i) => (
+                <button type="button" data-term={t} data-on={i === initial.terms.length - 1 ? "" : undefined} class:list={[chipBase, chipOn, "not-data-[on]:hover:text-mint"]}>{t}</button>
+              ))}
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="mb-3 block text-sm text-muted">Хүү (сараар)</span>
+            <b id="rate" class="font-display text-2xl text-mint tabular-nums">{initial.rate}%</b>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-dark relative overflow-hidden rounded-[28px] p-6 sm:p-9">
+        <span class="pointer-events-none absolute -top-24 -right-24 size-56 rounded-full bg-mint/10 blur-[70px]"></span>
+        <p class="text-sm text-muted">Сард төлөх дүн</p>
+        <div id="monthly" class="mt-1.5 mb-6 font-display text-[34px] font-extrabold tracking-[-.03em] text-mint tabular-nums sm:text-[44px]">0₮</div>
+        <dl class="mb-7 grid grid-cols-[1fr_auto] gap-3 border-t border-white/10 pt-5 text-sm">
+          <dt class="text-muted">Зээлийн дүн</dt><dd id="r-amount" class="text-right font-semibold tabular-nums">{fmt(initial.max)}</dd>
+          <dt class="text-muted">Хугацаа</dt><dd id="r-term" class="text-right font-semibold tabular-nums">12 сар</dd>
+          <dt class="text-muted">Хүү (сараар)</dt><dd id="r-rate" class="text-right font-semibold tabular-nums">{initial.rate}%</dd>
+        </dl>
+        <a data-magnetic href="#app" class="btn-gloss relative flex justify-center overflow-hidden rounded-full py-3.5 font-display font-semibold transition hover:shadow-[0_10px_40px_-8px_rgb(96_224_130/.6)]">
+          <span class="absolute inset-y-0 left-0 w-1/3 bg-white/40 animate-shimmer"></span>
+          <span class="relative">Зээл авах</span>
+        </a>
+        <p class="mt-3.5 text-xs text-muted">* Тэнцүү төлөлтөөр тооцсон урьдчилсан дүн. Эцсийн нөхцөл таны зээлийн эрхээс хамаарна.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, reduce } from "../scripts/motion";
+  import { products, fmt } from "../data/site";
+
+  const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+  const amt = $<HTMLInputElement>("amt");
+  const termsBox = $("terms");
+  const monthlyEl = $("monthly");
+  const chipClass = termsBox.firstElementChild!.className;
+
+  let product = products[1] as (typeof products)[number];
+  let term = product.terms[product.terms.length - 1] as number;
+  const shown = { v: 0 };
+
+  // equal monthly payments (annuity)
+  const payment = (amount: number, monthlyRate: number, months: number) => {
+    const r = monthlyRate / 100;
+    return (amount * r) / (1 - Math.pow(1 + r, -months));
+  };
+
+  function render() {
+    const a = Number(amt.value);
+    amt.style.setProperty("--p", `${((a - product.min) / (product.max - product.min)) * 100}%`);
+    $("amt-out").textContent = fmt(a);
+    $("r-amount").textContent = fmt(a);
+    $("r-term").textContent = `${term} сар`;
+    $("r-rate").textContent = $("rate").textContent = `${product.rate}%`;
+    termsBox.querySelectorAll<HTMLElement>("[data-term]").forEach((b) => b.toggleAttribute("data-on", Number(b.dataset.term) === term));
+
+    gsap.to(shown, {
+      v: payment(a, product.rate, term),
+      duration: reduce ? 0 : 0.7,
+      ease: "power3.out",
+      overwrite: true,
+      onUpdate: () => (monthlyEl.textContent = fmt(Math.round(shown.v))),
+    });
+  }
+
+  function pick(key: string) {
+    product = products.find((p) => p.key === key)!;
+    term = product.terms[product.terms.length - 1];
+    document.querySelectorAll<HTMLElement>("[data-product]").forEach((b) => b.toggleAttribute("data-on", b.dataset.product === key));
+    $("segment").dataset.active = key;
+    Object.assign(amt, { min: String(product.min), max: String(product.max), step: String(product.step) });
+    amt.value = String(product.max);
+    $("amt-min").textContent = fmt(product.min);
+    $("amt-max").textContent = fmt(product.max);
+    termsBox.innerHTML = product.terms.map((t) => `<button type="button" data-term="${t}" class="${chipClass}">${t}</button>`).join("");
+    if (!reduce) gsap.from(termsBox.children, { y: 10, opacity: 0, stagger: 0.06, duration: 0.4, ease: "back.out(2)" });
+    render();
+  }
+
+  amt.addEventListener("input", render);
+  termsBox.addEventListener("click", (e) => {
+    const b = (e.target as Element).closest<HTMLElement>("[data-term]");
+    if (b) (term = Number(b.dataset.term)), render();
+  });
+  document.querySelectorAll<HTMLElement>("[data-product]").forEach((b) => b.addEventListener("click", () => pick(b.dataset.product!)));
+  // "Тооцоолох" buttons on the product cards preselect their product
+  document.querySelectorAll<HTMLElement>("[data-pick]").forEach((a) => a.addEventListener("click", () => pick(a.dataset.pick!)));
+
+  render();
+</script>

@@ -1,0 +1,155 @@
+---
+import Phone from "./Phone.astro";
+import SectionHead from "./SectionHead.astro";
+import { youtubeGuide } from "../data/site";
+import { Picture } from "astro:assets";
+import s1 from "../assets/screens/screen-1.jpg";
+import s2 from "../assets/screens/screen-2.jpg";
+import s3 from "../assets/screens/screen-3.jpg";
+import s5 from "../assets/screens/screen-5.jpg";
+
+const steps = [
+  { title: "Нэвтрэх", text: "Утасны дугаар (+976) болон нууц үгээрээ, эсвэл Face ID-аар нэвтэрнэ.", screen: s3, alt: "Нэвтрэх дэлгэц" },
+  { title: "Баталгаажуулах", text: "Иргэний үнэмлэх, ДАН болон гарын үсгээ баталгаажуулна.", screen: s5, alt: "Баталгаажуулалтын дэлгэц" },
+  { title: "Зээлийн дүн тооцох", text: "Нэг товшилтоор танд олгох боломжит зээлийн дүнг тооцуулна.", screen: s2, alt: "Зээлийн дүн тооцох дэлгэц" },
+  { title: "Зээлээ авах", text: "Тооцсон дүнгээс хэрэгцээгээ сонгож, зээлээ шууд аваарай.", screen: s1, alt: "Тооцсон зээлийн дүн бүхий нүүр дэлгэц" },
+];
+---
+
+<section id="guide" class="relative overflow-x-clip py-16 sm:py-20 lg:flex lg:min-h-screen lg:items-center lg:py-10">
+  <div class="pointer-events-none absolute top-0 left-[30%] -z-10 size-[500px] rounded-full bg-ocean/50 blur-[120px]"></div>
+
+  <div class="mx-auto grid w-[min(1180px,100%-32px)] items-center gap-8 lg:grid-cols-[1fr_auto] lg:gap-20">
+    <div class="contents lg:block">
+      <SectionHead eyebrow="Апп ашиглах заавар" class="lg:mb-8">
+        <Fragment slot="title">Дөрөвхөн алхам</Fragment>
+        Салбар руу явах, цаас бөглөх шаардлагагүй. Бүгд таны гар утсанд.
+      </SectionHead>
+
+      <a data-magnetic href={youtubeGuide} target="_blank" rel="noopener" class="group justify-self-start inline-flex items-center gap-3 lg:mb-8 rounded-full border border-white/15 py-2 pr-5 pl-2 font-display text-sm font-semibold transition-colors hover:border-mint hover:text-mint" data-reveal>
+        <span class="relative grid size-9 place-items-center rounded-full bg-[#ff0033] text-white">
+          <span class="absolute inset-0 rounded-full bg-[#ff0033] opacity-60 animate-ping"></span>
+          <svg class="relative ml-0.5 size-3.5 fill-current" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" /></svg>
+        </span>
+        YouTube-ээс видео заавар үзэх
+      </a>
+
+      <div class="order-3 grid gap-3 lg:order-none" data-stagger>
+        {steps.map((s, i) => (
+          <button
+            type="button"
+            data-step={i}
+            data-reveal
+            class="group grid cursor-pointer grid-cols-[56px_1fr] items-start gap-x-4.5 glass rounded-[24px] px-6.5 py-6 text-left transition-[background-color,border-color,transform] duration-500 hover:border-mint/30 data-[on]:translate-x-2 data-[on]:border-mint/45 data-[on]:[--tint:rgb(1_174_118/.2)] lg:py-5"
+          >
+            <span class="font-display text-4xl leading-none font-extrabold text-white/15 transition-colors duration-500 group-data-[on]:text-mint group-data-[on]:[text-shadow:0_0_24px_rgb(96_224_130/.5)]">0{i + 1}</span>
+            <span>
+              <span class="mb-1 block font-display text-lg font-bold">{s.title}</span>
+              <span class="hidden text-sm text-muted transition-colors duration-500 group-data-[on]:block group-data-[on]:text-ink/80 lg:block">{s.text}</span>
+            </span>
+            <span class="col-start-2 mt-3 block h-[3px] overflow-hidden rounded-full bg-white/10">
+              <i class="block h-full w-0 bg-linear-to-r from-green to-mint shadow-[0_0_10px_var(--color-mint)]"></i>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="relative order-2 justify-self-center lg:order-none" data-reveal>
+      <div class="pointer-events-none absolute -inset-12 -z-10 rounded-full bg-green/20 blur-[80px]"></div>
+      <Phone class="w-[220px] sm:w-[300px] lg:w-[min(300px,36vh)]">
+        <div class="relative overflow-hidden rounded-[38px] bg-night">
+          {steps.map((s, i) => (
+            <Picture
+              src={s.screen}
+              alt={s.alt}
+              formats={["avif", "webp"]}
+              widths={[260, 400, 560]}
+              sizes="(min-width: 640px) 282px, 242px"
+              quality={70}
+              loading="lazy"
+              decoding="async"
+              data-screen={i}
+              class:list={["block w-full aspect-[1572/3376] object-cover", i > 0 && "absolute inset-0"]}
+            />
+          ))}
+          <span class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-transparent via-mint/15 to-transparent animate-scan"></span>
+        </div>
+      </Phone>
+      <div class="mt-6 flex items-center justify-center gap-2 font-display text-sm text-muted tabular-nums">
+        <span class="block h-5 overflow-hidden"><span id="step-num" class="block leading-5 font-bold text-mint">01</span></span>
+        <span>/ 0{steps.length}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, ScrollTrigger, lenis, reduce, onIdle } from "../scripts/motion";
+
+  const section = document.getElementById("guide")!;
+  const num = document.getElementById("step-num")!;
+  const steps = [...document.querySelectorAll<HTMLElement>("[data-step]")];
+  const screens = [...document.querySelectorAll<HTMLElement>("[data-screen]")];
+  const bars = steps.map((s) => s.querySelector("i")!);
+  let active = -1;
+
+  function setActive(i: number) {
+    if (i === active) return;
+    const forward = i > active;
+    active = i;
+    steps.forEach((s, k) => s.toggleAttribute("data-on", k === i));
+    screens.forEach((s, k) => s.toggleAttribute("data-on", k <= i));
+    num.textContent = `0${i + 1}`;
+    if (!reduce) gsap.fromTo(num, { yPercent: forward ? 100 : -100 }, { yPercent: 0, duration: 0.6, ease: "expo.out" });
+  }
+  setActive(0);
+
+  let onStepClick: (i: number) => void = () => {};
+  steps.forEach((s, i) => s.addEventListener("click", () => onStepClick(i)));
+
+  onIdle(() => gsap.matchMedia().add(
+    // GSAP only runs this callback when at least one condition matches, so the
+    // autoplay fallback needs its own (complementary) query
+    {
+      pin: "(min-width: 1024px) and (min-height: 680px) and (prefers-reduced-motion: no-preference)",
+      autoplay: "(max-width: 1023px), (max-height: 679px), (prefers-reduced-motion: reduce)",
+    },
+    (ctx) => {
+      if (ctx.conditions!.pin) {
+        // desktop: pin the section, scroll drives the steps
+        const st = ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: "+=240%",
+          pin: true,
+          onUpdate(self) {
+            const p = self.progress * steps.length;
+            setActive(Math.min(steps.length - 1, Math.floor(p)));
+            bars.forEach((b, k) => (b.style.width = `${gsap.utils.clamp(0, 1, p - k) * 100}%`));
+          },
+        });
+        onStepClick = (i) => {
+          const y = st.start + ((st.end - st.start) * (i + 0.5)) / steps.length;
+          lenis ? lenis.scrollTo(y, { duration: 1.2 }) : scrollTo({ top: y });
+        };
+        return;
+      }
+
+      // mobile / short screens: autoplay, each bar fills then advances
+      let tween: gsap.core.Tween | undefined;
+      const play = (i: number) => {
+        tween?.kill();
+        setActive(i);
+        gsap.set(bars, { width: "0%" });
+        tween = gsap.to(bars[i], { width: "100%", duration: 4.5, ease: "none", onComplete: () => play((i + 1) % steps.length) });
+      };
+      onStepClick = play;
+      const trigger = ScrollTrigger.create({ trigger: section, start: "top 70%", once: true, onEnter: () => play(0) });
+      return () => {
+        tween?.kill();
+        trigger.kill();
+      };
+    },
+  ));
+</script>

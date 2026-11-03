@@ -1,0 +1,79 @@
+---
+const items = ["Хурдацтай шийдэл", "Барьцаагүй боломж", "Ухаалаг төлөвлөлт", "Найдвартай хамгаалалт", "Богино хугацаат зээл", "Урт хугацаат зээл"];
+const words = ["Санхүүдээ", "үсрэлт", "хийе"];
+const bigWords = [...words, ...words, ...words, ...words];
+const spark = "M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12 6.4-.6 11.4-5.6 12-12z";
+const bigRow = "flex w-max items-center gap-12 whitespace-nowrap py-5 font-display text-[clamp(56px,9vw,128px)] leading-none font-extrabold tracking-[-.04em]";
+---
+
+<section class="relative overflow-hidden py-14 sm:py-20" aria-hidden="true">
+  <!-- tilted mint ribbon -->
+  <div class="relative z-10 -ml-[5%] w-[110%] -rotate-2 bg-linear-to-r from-green via-mint to-green py-3.5 shadow-[0_0_60px_rgb(96_224_130/.35)]">
+    <div data-marquee="-1" class="flex w-max items-center gap-10 font-display text-sm font-bold tracking-[.18em] whitespace-nowrap text-forest uppercase">
+      {[...items, ...items].map((t) => (
+        <span class="flex items-center gap-10">
+          {t}
+          <svg class="size-3.5 fill-forest animate-[spin_6s_linear_infinite]" viewBox="0 0 24 24"><path d={spark} /></svg>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- big words: outlined; each word fills with light the closer it is to the centre (set per frame below) -->
+  <div data-marquee-wrap class="relative mt-12 [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)] sm:mt-16">
+    <div class="pointer-events-none absolute top-1/2 left-1/2 h-[70%] w-[40%] -translate-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(96_224_130/.22),transparent)]"></div>
+    <div data-marquee="1" class={bigRow}>
+      {bigWords.map((w) => (
+        <span data-word class="flex items-center gap-12">
+          <span class="relative">
+            <span data-outline class="text-outline will-change-[opacity]">{w}</span>
+            <!-- box extends past the line so descenders (ү, р, д) are painted too -->
+            <span data-fill class="text-gradient absolute inset-x-0 -top-[.25em] -bottom-[.25em] pt-[.25em] opacity-0 will-change-[opacity]">{w}</span>
+          </span>
+          <svg data-spark class="size-[.35em] fill-mint opacity-30 animate-[spin_10s_linear_infinite]" viewBox="0 0 24 24"><path d={spark} /></svg>
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, onIdle } from "../scripts/motion";
+
+  const wrap = document.querySelector<HTMLElement>("[data-marquee-wrap]")!;
+  const words = [...wrap.querySelectorAll<HTMLElement>("[data-word]")].map((el) => ({
+    el,
+    fill: el.querySelector<HTMLElement>("[data-fill]")!,
+    outline: el.querySelector<HTMLElement>("[data-outline]")!,
+    spark: el.querySelector<SVGElement>("[data-spark]")!,
+    last: -1,
+  }));
+  let visible = false;
+
+  // each word's light follows a smooth curve of its distance from the screen centre
+  function light() {
+    if (!visible) return;
+    const centre = innerWidth / 2;
+    const reach = Math.max(innerWidth * 0.32, 260);
+    const levels = words.map(({ outline }) => {
+      const r = outline.getBoundingClientRect();
+      const t = Math.max(0, 1 - Math.abs(r.left + r.width / 2 - centre) / reach);
+      return Math.round(t * t * (3 - 2 * t) * 100) / 100; // smoothstep
+    });
+    words.forEach((w, i) => {
+      const v = levels[i];
+      if (v === w.last) return;
+      w.last = v;
+      w.fill.style.opacity = String(v);
+      w.outline.style.opacity = String(1 - v * 0.9);
+      w.spark.style.opacity = String(0.3 + v * 0.7);
+    });
+  }
+
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting;
+    light();
+  }).observe(wrap);
+  light();
+  onIdle(() => gsap.ticker.add(light));
+</script>
