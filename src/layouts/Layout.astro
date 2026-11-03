@@ -67,12 +67,20 @@ const { title, description } = Astro.props;
       import "../scripts/motion";
       import { appLinks } from "../data/site";
 
-      // "Апп татах" / "Зээл авах": straight to the right store on phones,
-      // otherwise keep #app (the hero's two store buttons)
+      // "Апп татах" / "Зээл авах": straight to the store. Phones get their own store;
+      // desktops get the App Store on a Mac, Google Play elsewhere, in a new tab
       const ua = navigator.userAgent;
-      const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS reports as Mac
-      const store = ios ? appLinks.ios : /Android/i.test(ua) ? appLinks.android : null;
-      if (store) document.querySelectorAll<HTMLAnchorElement>("[data-app-link]").forEach((a) => (a.href = store));
+      const touchMac = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1; // iPadOS reports as Mac
+      const ios = /iPhone|iPad|iPod/.test(ua) || touchMac;
+      const android = /Android/i.test(ua);
+      const store = ios || (!android && /Macintosh/.test(ua)) ? appLinks.ios : appLinks.android;
+      document.querySelectorAll<HTMLAnchorElement>("[data-app-link]").forEach((a) => {
+        a.href = store;
+        if (!ios && !android) {
+          a.target = "_blank";
+          a.rel = "noopener";
+        }
+      });
     </script>
   </body>
 </html>

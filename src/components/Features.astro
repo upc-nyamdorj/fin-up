@@ -2,34 +2,46 @@
 import SectionHead from "./SectionHead.astro";
 
 const features = [
-  { title: "Хурдацтай шийдэл", tagline: "Цаг алдалгүй үсэр", icon: "M13 2 4 14h7l-1 8 9-12h-7z" },
-  { title: "Барьцаагүй боломж", tagline: "Хязгаарыг дав", icon: "M7 11V7a5 5 0 0 1 9.9-1M5 11h14v10H5zM12 15v2" },
-  { title: "Ухаалаг төлөвлөлт", tagline: "Ил тод өсөлт", icon: "M3 3v18h18M7 15l4-4 3 3 6-6M15 8h5v5" },
-  { title: "Найдвартай хамгаалалт", tagline: "Аюулгүй байдал", icon: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zm-3-10 2 2 4-4" },
+  { title: "Хурдан шийдэл", tagline: "Цаг алдалгүй үсэр", text: "Хүсэлтээ апп-аасаа хэдхэн алхмаар илгээж, шийдвэрээ шуурхай аваарай.", icon: "M13 2 4 14h7l-1 8 9-12h-7z" },
+  { title: "Барьцаагүй боломж", tagline: "Хязгаарыг дав", text: "Барьцаа хөрөнгө шаардахгүй — гар утсаараа л зээлээ аваарай.", icon: "M7 11V7a5 5 0 0 1 9.9-1M5 11h14v10H5zM12 15v2" },
+  { title: "Ухаалаг төлөвлөлт", tagline: "Ил тод өсөлт", text: "Хүү, шимтгэл, сар бүрийн төлөлтөө урьдчилан харж төлөвлөөрөй.", icon: "M3 3v18h18M7 15l4-4 3 3 6-6M15 8h5v5" },
+  { title: "Найдвартай хамгаалалт", tagline: "Аюулгүй байдал", text: "Таны хувийн мэдээлэл болон гүйлгээ найдвартай хамгаалагдана.", icon: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zm-3-10 2 2 4-4" },
 ];
 ---
 
-<section id="features" class="relative py-16 sm:py-20 lg:py-24">
-  <div class="mx-auto w-[min(1180px,100%-32px)]">
-    <SectionHead eyebrow="Давуу тал">
-      <Fragment slot="title">Яагаад FinUp<br />гэж?</Fragment>
-    </SectionHead>
+<section id="features" class="relative py-16 sm:py-20 lg:py-28">
+  <div class="mx-auto grid w-[min(1180px,100%-32px)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <SectionHead eyebrow="Давуу тал" class="mb-0">
+        <Fragment slot="title">Яагаад FinUp<br />гэж?</Fragment>
+        Санхүүгийн шийдвэрээ хурдан, ил тод, аюулгүй гаргахад тань FinUp хамт байна.
+      </SectionHead>
+      <a href="#calc" data-magnetic class="glass mt-8 hidden w-max items-center gap-3 rounded-full py-2 pr-2 pl-5 text-sm font-semibold transition-colors hover:text-mint lg:inline-flex" data-reveal>
+        Тооцоолж үзэх
+        <span class="grid size-9 place-items-center rounded-full bg-mint text-forest">
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </a>
+    </div>
 
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger data-spotlight-group>
+    <div class="grid gap-3.5 sm:grid-cols-2 sm:gap-4" data-stagger data-spotlight-group>
       {features.map((f, i) => (
-        <div class="spotlight glass group relative flex flex-row items-center gap-5 overflow-hidden rounded-[28px] px-6 py-6 sm:min-h-[260px] sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-9 transition-transform duration-500 hover:-translate-y-1" data-reveal>
+        <article class="spotlight glass group relative flex gap-4 overflow-hidden rounded-[24px] p-5 transition-transform duration-500 hover:-translate-y-1 sm:flex-col sm:gap-0 sm:rounded-[28px] sm:p-7" data-reveal>
           <span class="pointer-events-none absolute -top-20 -right-20 size-40 rounded-full bg-mint/0 blur-3xl transition-colors duration-500 group-hover:bg-mint/15"></span>
-          <span class="absolute top-7 right-7 hidden font-display sm:block text-sm font-bold text-white/15 tabular-nums transition-colors duration-500 group-hover:text-mint">0{i + 1}</span>
-          <div class="glass-green grid size-14 shrink-0 place-items-center rounded-2xl sm:mb-auto transition duration-500 group-hover:rotate-[8deg] group-hover:scale-110">
-            <svg class="draw size-6" viewBox="0 0 24 24" fill="none" stroke="var(--color-mint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={f.icon} pathLength="1" /></svg>
+          <div class="flex shrink-0 items-start justify-between">
+            <div class="glass-green grid size-12 place-items-center rounded-2xl transition duration-500 group-hover:rotate-[8deg] group-hover:scale-110 sm:size-14">
+              <svg class="draw size-5 sm:size-6" viewBox="0 0 24 24" fill="none" stroke="var(--color-mint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={f.icon} pathLength="1" /></svg>
+            </div>
+            <span class="hidden font-display text-sm font-bold text-white/20 tabular-nums transition-colors duration-500 group-hover:text-mint sm:block">0{i + 1}</span>
           </div>
-          <div class="sm:mt-8">
-            <h3 class="mb-1.5 text-lg font-bold tracking-[-.01em]">{f.title}</h3>
-            <p class="flex items-center gap-2 text-mint">
-              <span class="h-px w-5 bg-mint/60 transition-[width] duration-500 group-hover:w-9"></span>{f.tagline}
+          <div class="min-w-0 sm:mt-10">
+            <h3 class="text-[17px] font-bold tracking-[-.01em] sm:text-lg">{f.title}</h3>
+            <p class="mt-1 flex items-center gap-2 text-sm text-mint">
+              <span class="h-px w-4 bg-mint/60 transition-[width] duration-500 group-hover:w-8"></span>{f.tagline}
             </p>
+            <p class="mt-2.5 text-sm leading-relaxed text-muted sm:mt-4">{f.text}</p>
           </div>
-        </div>
+        </article>
       ))}
     </div>
   </div>
