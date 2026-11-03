@@ -10,8 +10,8 @@
   --color-ink: #eaf2f8;
   --color-muted: #8fa3b8;
 
-  --font-sans: "TT Hoves Pro", system-ui, sans-serif;
-  --font-display: "TT Hoves Pro", system-ui, sans-serif;
+  --font-sans: "Manrope Variable", system-ui, sans-serif;
+  --font-display: "Manrope Variable", system-ui, sans-serif;
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-float-slow: float 8s ease-in-out infinite;
@@ -40,41 +40,6 @@
   @keyframes drop { from { transform: translateY(-100%); } to { transform: translateY(200%); } }
 }
 
-@font-face {
-  font-family: "TT Hoves Pro";
-  src: url("/fonts/TT_Hoves_Pro_Trial_Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Hoves Pro";
-  src: url("/fonts/TT_Hoves_Pro_Trial_Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Hoves Pro";
-  src: url("/fonts/TT_Hoves_Pro_Trial_DemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Hoves Pro";
-  src: url("/fonts/TT_Hoves_Pro_Trial_Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "TT Hoves Pro";
-  src: url("/fonts/TT_Hoves_Pro_Trial_ExtraBold.woff2") format("woff2");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
 
 @property --angle {
   syntax: "<angle>";

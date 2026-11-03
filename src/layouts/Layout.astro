@@ -1,5 +1,7 @@
 ---
+import "@fontsource-variable/manrope";
 import "../styles/global.css";
+import manropeCyrillic from "@fontsource-variable/manrope/files/manrope-cyrillic-wght-normal.woff2?url";
 
 interface Props {
   title: string;
@@ -18,9 +20,8 @@ const { title, description } = Astro.props;
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0a1833" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" href="/fonts/TT_Hoves_Pro_Trial_Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/TT_Hoves_Pro_Trial_Bold.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/TT_Hoves_Pro_Trial_ExtraBold.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Mongolian text is mostly the Cyrillic subset (Ө Ү live in the tiny Cyrillic Ext one, inlined by Vite) -->
+    <link rel="preload" href={manropeCyrillic} as="font" type="font/woff2" crossorigin />
     <!-- splash intro on every full load (skipped for reduced motion); set before first paint so it never flashes -->
     <script is:inline>
       if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro");
