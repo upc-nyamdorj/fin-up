@@ -7,10 +7,13 @@ import { appLinks, contact, faqs } from "../data/site";
 interface Props {
   title: string;
   description: string;
+  /** splash intro; off for secondary pages */
+  intro?: boolean;
 }
 
-const { title, description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { title, description, intro = true } = Astro.props;
+// build.format "file" gives /terms.html; the served URL is /terms (cleanUrls)
+const canonical = new URL(Astro.url.pathname.replace(/(index)?\.html$/, ""), Astro.site);
 const ogImage = new URL("/og.png", Astro.site);
 
 const jsonLd = [
@@ -64,13 +67,16 @@ const jsonLd = [
     <meta name="twitter:image" content={ogImage} />
     <meta name="apple-itunes-app" content="app-id=6779099419" />
 
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <!-- organization + FAQ schema describe the home page only -->
+    {canonical.pathname === "/" && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <!-- Mongolian text is mostly the Cyrillic subset (Ө Ү live in the tiny Cyrillic Ext one, inlined by Vite) -->
     <link rel="preload" href={manropeCyrillic} as="font" type="font/woff2" crossorigin />
     <!-- splash intro on every full load (skipped for reduced motion); set before first paint so it never flashes -->
-    <script is:inline>
-      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro");
-    </script>
+    {intro && (
+      <script is:inline>
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro");
+      </script>
+    )}
   </head>
   <body class="grid-bg">
     <!-- splash intro: pure CSS (global.css) so it runs before any JS -->

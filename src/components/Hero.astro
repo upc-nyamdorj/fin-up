@@ -1,5 +1,6 @@
 ---
 import Phone from "./Phone.astro";
+import Swirl from "./Swirl.astro";
 import { stores } from "../data/site";
 import homeScreen from "../assets/screens/screen-1.jpg";
 import loginScreen from "../assets/screens/screen-3.jpg";
@@ -54,6 +55,7 @@ const chip = "glass-dark relative flex items-center gap-3 overflow-hidden whites
     </div>
 
     <div data-hero-stage data-tilt-zone class="relative grid min-h-[540px] place-items-center sm:min-h-[640px]">
+      <Swirl name="loops" data-in="draw" style="--d:300ms" loading="eager" sizes="(min-width: 1024px) 960px, 125vw" class="absolute top-[30%] left-[-12%] w-[125%] opacity-95 lg:top-[33%] lg:left-[-41%] lg:w-[178%]" />
       <div data-in="ring" class="absolute aspect-square w-[360px] sm:w-[560px]">
         <div class="size-full rounded-full border border-dashed border-mint/20 animate-spin-slow after:absolute after:-top-[5px] after:left-1/2 after:size-2.5 after:rounded-full after:bg-mint after:shadow-[0_0_20px_var(--color-mint)]"></div>
       </div>

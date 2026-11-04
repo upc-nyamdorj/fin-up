@@ -1,5 +1,6 @@
 ---
 import SectionHead from "./SectionHead.astro";
+import Swirl from "./Swirl.astro";
 import { products, fmt } from "../data/site";
 
 const looks = [
@@ -9,7 +10,8 @@ const looks = [
 ---
 
 <section id="products" class="relative py-16 sm:py-20 lg:py-24">
-  <div class="mx-auto w-[min(1180px,100%-32px)]">
+  <Swirl name="wave" data-swirl sizes="(min-width: 1024px) 560px, 70vw" class="absolute top-8 right-[-12%] hidden w-[70%] sm:block lg:right-[max(-40px,calc(50%-640px))] lg:w-[560px]" />
+  <div class="relative mx-auto w-[min(1180px,100%-32px)]">
     <SectionHead eyebrow="Бүтээгдэхүүн">
       <Fragment slot="title">ЗОРИЛГОДОО ТОХИРСОН<br />ҮСРЭЛТЭЭ ХИЙ</Fragment>
       Богино болон урт хугацаат зээлийн нөхцөлийг харьцуулж, өөрт тохирохыг нь сонгоорой.

@@ -1,4 +1,8 @@
 ---
+// on other pages the section links point back to the home page
+const { home = true } = Astro.props as { home?: boolean };
+const base = home ? "" : "/";
+
 const links = [
   { href: "#products", label: "Бүтээгдэхүүн" },
   { href: "#features", label: "Давуу тал" },
@@ -10,11 +14,11 @@ const links = [
 
 <nav id="nav" class="sticky top-0 z-50 px-3 pt-3">
   <div class="glass-dark mx-auto flex h-14 w-[min(1180px,100%)] items-center justify-between rounded-full pr-2 pl-6">
-    <a href="#" class="font-display text-[24px] font-bold tracking-[-.04em] text-white">Fin<span class="text-mint">Up</span></a>
+    <a href={home ? "#" : "/"} class="font-display text-[24px] font-bold tracking-[-.04em] text-white">Fin<span class="text-mint">Up</span></a>
 
     <div class="hidden gap-1 text-sm text-muted lg:flex">
       {links.map((l) => (
-        <a href={l.href} class="rounded-full px-4 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-ink">
+        <a href={base + l.href} class="rounded-full px-4 py-2 transition-colors duration-300 hover:bg-white/10 hover:text-ink">
           {l.label}
         </a>
       ))}

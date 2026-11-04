@@ -101,12 +101,14 @@
 [data-in="slide"] { animation-name: slide-in; animation-duration: 1.5s; }
 [data-in="pop"] { animation-name: pop-in; animation-timing-function: cubic-bezier(.34, 1.56, .64, 1); animation-duration: .8s; }
 [data-in="ring"] { animation-name: pop-in; animation-duration: 1.8s; }
+[data-in="draw"] { animation-name: draw-in; animation-duration: 2.2s; animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
 
 @keyframes rise-in { from { opacity: 0; transform: translateY(110%); } }
 @keyframes fade-up { from { opacity: 0; transform: translateY(30px); filter: blur(8px); } }
 @keyframes phone-in { from { opacity: 0; transform: translateY(160px); } }
 @keyframes slide-in { from { opacity: 0; transform: translateX(100px); } }
 @keyframes pop-in { from { opacity: 0; transform: scale(.5); } }
+@keyframes draw-in { from { clip-path: inset(-10% 100% -10% 0); } to { clip-path: inset(-10% 0 -10% 0); } }
 
 /* decorative loops stop while their section is off screen (toggled in motion.ts) */
 .offscreen, .offscreen * { animation-play-state: paused !important; }
@@ -291,3 +293,22 @@ input[type="range"]::-moz-range-thumb { @apply size-[22px] rounded-full bg-mint 
   [data-reveal] { opacity: 1; transform: none; filter: none; }
   .draw path { stroke-dashoffset: 0; }
 }
+
+/* legal pages (terms, privacy): long-form text on the dark glass card */
+.legal { color: rgb(234 242 248 / .82); line-height: 1.7; }
+.legal h1 { margin-bottom: .5rem; font-family: var(--font-display); font-size: clamp(30px, 4.5vw, 44px); font-weight: 700; line-height: 1.1; letter-spacing: -.03em; color: #fff; }
+.legal .updated { margin-bottom: 2.5rem; font-size: .875rem; color: var(--color-muted); }
+.legal h2 { margin: 2.75rem 0 1rem; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; color: #fff; }
+.legal h1 + h2, .legal .updated + h2 { margin-top: 2rem; }
+.legal p, .legal li { margin-bottom: .75rem; }
+.legal b { color: var(--color-mint); font-weight: 700; margin-right: .35em; }
+.legal ol { margin: 0 0 .75rem 1.25rem; list-style: none; }
+.legal ul { margin: 0 0 1rem 1.25rem; list-style: disc; }
+.legal ul li::marker { color: var(--color-mint); }
+.legal strong { color: var(--color-ink); font-weight: 600; }
+.legal .table-wrap { margin: 1rem 0 1.5rem; overflow-x: auto; border: 1px solid rgb(255 255 255 / .1); border-radius: 18px; }
+.legal table { width: 100%; border-collapse: collapse; font-size: .925rem; }
+.legal th, .legal td { padding: .8rem 1rem; text-align: left; vertical-align: top; border-bottom: 1px solid rgb(255 255 255 / .08); }
+.legal tr:last-child td { border-bottom: 0; }
+.legal th { background: rgb(96 224 130 / .08); color: var(--color-ink); font-weight: 600; }
+.legal td:first-child { color: var(--color-ink); font-weight: 500; }

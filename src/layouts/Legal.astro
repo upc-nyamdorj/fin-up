@@ -1,0 +1,29 @@
+---
+import Layout from "./Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  updated?: string;
+}
+
+const { title, description, updated } = Astro.props;
+---
+
+<Layout title={`${title} — FinUp`} description={description} intro={false}>
+  <Nav home={false} />
+  <main class="px-3 pt-10 pb-16 sm:pt-16 sm:pb-24">
+    <article class="legal glass-dark mx-auto w-[min(860px,100%)] rounded-[32px] px-6 py-10 sm:px-12 sm:py-14">
+      <a href="/" class="mb-8 inline-flex min-h-11 items-center gap-2 text-sm text-muted transition-colors hover:text-mint">
+        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
+        Нүүр хуудас
+      </a>
+      <h1>{title}</h1>
+      {updated && <p class="updated">Сүүлд шинэчилсэн огноо: {updated}</p>}
+      <slot />
+    </article>
+  </main>
+  <Footer />
+</Layout>

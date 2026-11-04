@@ -68,6 +68,13 @@ if (!reduce) onIdle(() => {
     });
   }));
 
+  // swirls draw left to right with the scroll, then drift a little slower than the page
+  $$("[data-swirl]").forEach((el) => {
+    gsap.fromTo(el, { clipPath: "inset(-10% 100% -10% 0)" }, { clipPath: "inset(-10% 0% -10% 0)", ease: "none", scrollTrigger: { trigger: el, start: "top 90%", end: "center 55%", scrub: 1 } });
+    if (el.dataset.swirl === "draw") return; // e.g. inside a sticky column, where drift would slide it over the copy
+    gsap.fromTo(el, { y: 70 }, { y: -70, ease: "none", scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: true } });
+  });
+
   // pause CSS loops (aurora, orbits, floats, shimmer) in sections that are off screen
   $$("#hero, [data-marquee-wrap], #guide").forEach((el) =>
     ScrollTrigger.create({ trigger: el, start: "top bottom", end: "bottom top", onToggle: (self) => el.classList.toggle("offscreen", !self.isActive) }),

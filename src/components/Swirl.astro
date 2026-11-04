@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets";
+import loops from "../assets/swirls/loops.png";
+import wave from "../assets/swirls/wave.png";
+import hook from "../assets/swirls/hook.png";
+
+// brand "jump" trails; decorative. Each starts at its left end and finishes at the dot on the right,
+// so a left-to-right clip reveal reads as the line being drawn
+const srcs = { loops, wave, hook };
+
+interface Props {
+  name: keyof typeof srcs;
+  sizes: string;
+  class?: string;
+  loading?: "lazy" | "eager";
+  style?: string;
+  [attr: `data-${string}`]: unknown;
+}
+
+const { name, sizes, class: className, loading = "lazy", ...rest } = Astro.props;
+---
+
+<Image src={srcs[name]} alt="" aria-hidden="true" widths={[480, 800, 1200, 1800]} sizes={sizes} loading={loading} decoding="async" class:list={["pointer-events-none max-w-none select-none", className]} {...rest} />
