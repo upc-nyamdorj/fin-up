@@ -34,18 +34,18 @@ const steps = [
         YouTube-ээс видео заавар үзэх
       </a>
 
-      <div class="order-3 grid gap-3 lg:order-none" data-stagger>
+      <div id="step-track" class="relative order-3 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:order-none lg:mx-0 lg:grid lg:overflow-visible lg:px-0" data-stagger>
         {steps.map((s, i) => (
           <button
             type="button"
             data-step={i}
             data-reveal
-            class="group grid cursor-pointer grid-cols-[56px_1fr] items-start gap-x-4.5 glass rounded-[24px] px-6.5 py-6 text-left transition-[background-color,border-color,transform] duration-500 hover:border-mint/30 data-[on]:translate-x-2 data-[on]:border-mint/45 data-[on]:[--tint:rgb(1_174_118/.2)] lg:py-5"
+            class="group grid w-[85%] shrink-0 cursor-pointer snap-center grid-cols-[56px_1fr] items-start gap-x-4.5 glass rounded-[24px] px-6.5 py-6 text-left transition-[background-color,border-color,transform] duration-500 hover:border-mint/30 sm:w-[60%] lg:w-auto lg:data-[on]:translate-x-2 data-[on]:border-mint/45 data-[on]:[--tint:rgb(1_174_118/.2)] lg:py-5"
           >
             <span class="font-display text-4xl leading-none font-extrabold text-white/15 transition-colors duration-500 group-data-[on]:text-mint group-data-[on]:[text-shadow:0_0_24px_rgb(96_224_130/.5)]">0{i + 1}</span>
             <span>
               <span class="mb-1 block font-display text-lg font-bold">{s.title}</span>
-              <span class="hidden text-sm text-muted transition-colors duration-500 group-data-[on]:block group-data-[on]:text-ink/80 lg:block">{s.text}</span>
+              <span class="block text-sm text-muted transition-colors duration-500 group-data-[on]:text-ink/80">{s.text}</span>
             </span>
             <span class="col-start-2 mt-3 block h-[3px] overflow-hidden rounded-full bg-white/10">
               <i class="block h-full w-0 bg-linear-to-r from-green to-mint shadow-[0_0_10px_var(--color-mint)]"></i>
@@ -136,19 +136,53 @@ const steps = [
         return;
       }
 
-      // mobile / short screens: autoplay, each bar fills then advances
+      // mobile / short screens: autoplay, each bar fills then advances. Below lg
+      // the cards sit in a horizontal swipe track that follows the active step,
+      // and a swipe picks the step (restarting the autoplay from there)
+      const track = document.getElementById("step-track")!;
+      const center = (i: number) => {
+        if (track.scrollWidth <= track.clientWidth) return;
+        const s = steps[i];
+        track.scrollTo({ left: s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
+      };
+      const nearest = () => {
+        const mid = track.scrollLeft + track.clientWidth / 2;
+        const dist = (s: HTMLElement) => Math.abs(s.offsetLeft + s.offsetWidth / 2 - mid);
+        return steps.reduce((best, s, k) => (dist(s) < dist(steps[best]) ? k : best), 0);
+      };
+
       let tween: gsap.core.Tween | undefined;
       const play = (i: number) => {
         tween?.kill();
         setActive(i);
+        center(i);
         gsap.set(bars, { width: "0%" });
         tween = gsap.to(bars[i], { width: "100%", duration: 4.5, ease: "none", onComplete: () => play((i + 1) % steps.length) });
       };
       onStepClick = play;
+
+      // hold the autoplay while a finger is on the track, decide once scrolling settles
+      let settle: number | undefined;
+      const hold = () => tween?.pause();
+      const onScroll = () => {
+        clearTimeout(settle);
+        settle = window.setTimeout(() => {
+          const i = nearest();
+          i === active ? tween?.resume() : play(i);
+        }, 120);
+      };
+      track.addEventListener("touchstart", hold, { passive: true });
+      track.addEventListener("touchend", onScroll, { passive: true });
+      track.addEventListener("scroll", onScroll, { passive: true });
+
       const trigger = ScrollTrigger.create({ trigger: section, start: "top 70%", once: true, onEnter: () => play(0) });
       return () => {
         tween?.kill();
         trigger.kill();
+        clearTimeout(settle);
+        track.removeEventListener("scroll", onScroll);
+        track.removeEventListener("touchstart", hold);
+        track.removeEventListener("touchend", onScroll);
       };
     },
   ));
