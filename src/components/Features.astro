@@ -26,7 +26,7 @@ const features = [
       <Swirl name="hook" data-swirl="draw" sizes="440px" class="-ml-12 mt-12 hidden w-[440px] lg:block" />
     </div>
 
-    <div class="grid gap-3.5 sm:grid-cols-2 sm:gap-4" data-stagger data-spotlight-group>
+    <div class="grid auto-rows-fr gap-3.5 sm:grid-cols-2 sm:gap-4" data-stagger data-spotlight-group>
       {features.map((f, i) => (
         <article class="spotlight glass group relative flex gap-4 overflow-hidden rounded-[24px] p-5 transition-transform duration-500 hover:-translate-y-1 sm:flex-col sm:gap-0 sm:rounded-[28px] sm:p-7" data-reveal>
           <span class="pointer-events-none absolute -top-20 -right-20 size-40 rounded-full bg-mint/0 blur-3xl transition-colors duration-500 group-hover:bg-mint/15"></span>

@@ -34,13 +34,13 @@ const steps = [
         YouTube-ээс видео заавар үзэх
       </a>
 
-      <div id="step-track" class="relative order-3 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:order-none lg:mx-0 lg:grid lg:overflow-visible lg:px-0" data-stagger>
+      <div id="step-track" class="relative order-3 -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:order-none lg:mx-0 lg:grid lg:gap-3 lg:overflow-visible lg:px-0" data-stagger>
         {steps.map((s, i) => (
           <button
             type="button"
             data-step={i}
             data-reveal
-            class="group grid w-[85%] shrink-0 cursor-pointer snap-center grid-cols-[56px_1fr] items-start gap-x-4.5 glass rounded-[24px] px-6.5 py-6 text-left transition-[background-color,border-color,transform] duration-500 hover:border-mint/30 sm:w-[60%] lg:w-auto lg:data-[on]:translate-x-2 data-[on]:border-mint/45 data-[on]:[--tint:rgb(1_174_118/.2)] lg:py-5"
+            class="group grid w-full shrink-0 cursor-pointer snap-center grid-cols-[56px_1fr] grid-rows-[1fr_auto] items-start gap-x-4.5 glass rounded-[24px] px-6.5 py-6 text-left transition-[background-color,border-color,transform] duration-500 hover:border-mint/30 lg:w-auto lg:data-[on]:translate-x-2 data-[on]:border-mint/45 data-[on]:[--tint:rgb(1_174_118/.2)] lg:py-5"
           >
             <span class="font-display text-4xl leading-none font-extrabold text-white/15 transition-colors duration-500 group-data-[on]:text-mint group-data-[on]:[text-shadow:0_0_24px_rgb(96_224_130/.5)]">0{i + 1}</span>
             <span>

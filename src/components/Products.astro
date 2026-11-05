@@ -10,14 +10,14 @@ const looks = [
 ---
 
 <section id="products" class="relative py-16 sm:py-20 lg:py-24">
-  <Swirl name="wave" data-swirl sizes="(min-width: 1024px) 560px, 70vw" class="absolute top-8 right-[-12%] hidden w-[70%] sm:block lg:right-[max(-40px,calc(50%-640px))] lg:w-[560px]" />
+  <Swirl name="wave" data-swirl sizes="560px" class="absolute top-8 right-[max(-40px,calc(50%-640px))] hidden w-[560px] xl:block" />
   <div class="relative mx-auto w-[min(1180px,100%-32px)]">
     <SectionHead eyebrow="Бүтээгдэхүүн">
       <Fragment slot="title">ЗОРИЛГОДОО ТОХИРСОН<br />ҮСРЭЛТЭЭ ХИЙ</Fragment>
       Богино болон урт хугацаат зээлийн нөхцөлийг харьцуулж, өөрт тохирохыг нь сонгоорой.
     </SectionHead>
 
-    <div class="grid gap-6 lg:grid-cols-2" data-stagger data-spotlight-group>
+    <div class="grid gap-6 md:grid-cols-2" data-stagger data-spotlight-group>
       {products.map((p, i) => {
         const rows = [
           { label: "Хэмжээ", value: `${fmt(p.min)} – ${fmt(p.max)}` },
@@ -32,7 +32,7 @@ const looks = [
             <span class="mb-5 inline-flex items-center gap-2 self-start rounded-full border border-mint/20 bg-mint/10 px-3 py-1 text-xs font-semibold text-mint">
               <b class="size-1.5 rounded-full bg-mint animate-blink"></b>{looks[i].tag}
             </span>
-            <h3 class="text-[28px] leading-tight font-bold tracking-[-.02em]">{p.name}</h3>
+            <h3 class="text-[24px] leading-tight font-bold tracking-[-.02em] lg:text-[28px]">{p.name}</h3>
 
             <span class="mt-6 text-sm text-muted">Дээд хэмжээ</span>
             <div data-max={p.max} class="font-display text-[clamp(36px,4.4vw,52px)] font-extrabold tracking-[-.03em] tabular-nums bg-linear-to-r from-white to-mint bg-clip-text text-transparent">0₮</div>

@@ -10,25 +10,25 @@ import { contact, faqs } from "../data/site";
         <Fragment slot="title">Танд асуулт<br />байна уу?</Fragment>
         Хариултаа олохгүй бол бидэнтэй холбогдоорой.
       </SectionHead>
-      <div class="flex flex-wrap gap-3" data-reveal>
-        <a data-magnetic href={`mailto:${contact.email}`} class="glass rounded-full px-5 py-3 font-display text-sm font-semibold transition-colors hover:text-mint">{contact.email}</a>
-        <a data-magnetic href={`tel:${contact.phone.replace("-", "")}`} class="glass rounded-full px-5 py-3 font-display text-sm font-semibold transition-colors hover:text-mint">{contact.phone}</a>
+      <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap" data-reveal>
+        <a data-magnetic href={`mailto:${contact.email}`} class="glass rounded-full px-4 py-3 text-center font-display text-sm font-semibold transition-colors hover:text-mint sm:px-5">{contact.email}</a>
+        <a data-magnetic href={`tel:${contact.phone.replace("-", "")}`} class="glass rounded-full px-4 py-3 text-center font-display text-sm font-semibold transition-colors hover:text-mint sm:px-5">{contact.phone}</a>
       </div>
     </div>
 
     <div class="grid gap-3" data-stagger>
       {faqs.map((f, i) => (
         <div data-faq data-reveal class="spotlight glass group rounded-[24px] data-[open]:border-mint/40 data-[open]:[--tint:rgb(1_174_118/.18)]">
-          <button type="button" aria-expanded="false" aria-controls={`faq-${i}`} class="flex w-full cursor-pointer items-center gap-5 px-6 py-5.5 text-left">
+          <button type="button" aria-expanded="false" aria-controls={`faq-${i}`} class="flex w-full cursor-pointer items-center gap-3.5 px-5 py-5 text-left sm:gap-5 sm:px-6 sm:py-5.5">
             <span class="font-display text-sm font-bold text-white/20 tabular-nums transition-colors group-data-[open]:text-mint">0{i + 1}</span>
-            <span class="flex-1 font-display font-semibold sm:text-lg">{f.q}</span>
+            <span class="flex-1 font-display text-[15px] leading-snug font-semibold sm:text-lg">{f.q}</span>
             <span class="relative grid size-9 shrink-0 place-items-center rounded-full border border-white/10 transition-[transform,background-color,border-color] duration-500 group-data-[open]:rotate-[135deg] group-data-[open]:border-mint group-data-[open]:bg-mint">
               <span class="absolute h-px w-3.5 bg-current group-data-[open]:bg-forest"></span>
               <span class="absolute h-3.5 w-px bg-current group-data-[open]:bg-forest"></span>
             </span>
           </button>
           <div id={`faq-${i}`} data-faq-body class="h-0 overflow-hidden">
-            <p class="px-6 pb-6 pl-[68px] text-muted">{f.a}</p>
+            <p class="px-5 pb-6 pl-[54px] text-muted sm:px-6 sm:pl-[68px]">{f.a}</p>
           </div>
         </div>
       ))}

@@ -2,7 +2,7 @@
 import { products, fmt } from "../data/site";
 
 const initial = products[1];
-const chipBase = "glass rounded-full px-4.5 py-2.5 font-display text-sm font-semibold transition-colors duration-300";
+const chipBase = "glass rounded-full px-4 py-2.5 sm:px-4.5 font-display text-sm font-semibold transition-colors duration-300";
 const chipOn = "data-[on]:btn-gloss data-[on]:scale-110 data-[on]:border-mint transition-transform";
 ---
 
@@ -17,7 +17,7 @@ const chipOn = "data-[on]:btn-gloss data-[on]:scale-110 data-[on]:border-mint tr
         <div id="segment" data-active={initial.key} class="group/seg glass relative mb-8 grid grid-cols-2 rounded-full p-1.5" role="tablist">
           <span class="btn-gloss pointer-events-none absolute inset-y-1.5 left-1.5 w-[calc(50%-6px)] rounded-full transition-transform duration-500 ease-[cubic-bezier(.34,1.3,.64,1)] group-data-[active=long]/seg:translate-x-full"></span>
           {products.map((p) => (
-            <button type="button" role="tab" data-product={p.key} data-on={p.key === initial.key ? "" : undefined} class="relative z-10 rounded-full px-3 py-3 font-display text-sm font-semibold text-muted transition-colors duration-500 data-[on]:text-forest">
+            <button type="button" role="tab" data-product={p.key} data-on={p.key === initial.key ? "" : undefined} class="relative z-10 rounded-full px-1 py-3 font-display text-[13px] font-semibold whitespace-nowrap sm:px-3 sm:text-sm text-muted transition-colors duration-500 data-[on]:text-forest">
               {p.name.replace(" зээл", "")}<span class="hidden sm:inline"> зээл</span>
             </button>
           ))}
@@ -27,7 +27,7 @@ const chipOn = "data-[on]:btn-gloss data-[on]:scale-110 data-[on]:border-mint tr
         <input type="range" id="amt" min={initial.min} max={initial.max} step={initial.step} value={initial.max} />
         <div class="mt-2 mb-8 flex justify-between text-xs text-muted tabular-nums"><span id="amt-min">{fmt(initial.min)}</span><span id="amt-max">{fmt(initial.max)}</span></div>
 
-        <div class="flex flex-wrap items-end justify-between gap-6">
+        <div class="flex items-end justify-between gap-4">
           <div>
             <span class="mb-3 block text-sm text-muted">Хугацаа (сараар)</span>
             <div id="terms" class="flex gap-2">
@@ -36,8 +36,8 @@ const chipOn = "data-[on]:btn-gloss data-[on]:scale-110 data-[on]:border-mint tr
               ))}
             </div>
           </div>
-          <div class="text-right">
-            <span class="mb-3 block text-sm text-muted">Хүү (сараар)</span>
+          <div class="shrink-0 text-right">
+            <span class="mb-3 block text-sm whitespace-nowrap text-muted">Хүү (сараар)</span>
             <b id="rate" class="font-display text-2xl text-mint tabular-nums">{initial.rate}%</b>
           </div>
         </div>
