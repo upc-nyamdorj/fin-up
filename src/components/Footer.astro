@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import { contact } from "../data/site";
+import logo from "../assets/logo.png";
 
 const socials = [
   { label: "Facebook", href: contact.facebook, path: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" },
@@ -21,7 +23,7 @@ const info = [
     <div class="grid items-center gap-10 md:grid-cols-[1fr_auto_1fr] md:gap-12" data-stagger>
       <a href="#" aria-label="FinUp — дээш буцах" data-cursor-label="Дээш ↑" class="group relative order-first justify-self-center md:order-none md:col-start-2" data-reveal>
         <span class="pointer-events-none absolute inset-0 -z-10 scale-150 rounded-full bg-mint/15 opacity-60 blur-[60px] transition-opacity duration-500 group-hover:opacity-100"></span>
-        <span class="block font-display text-[clamp(56px,8vw,104px)] leading-none font-bold tracking-[-.05em] text-white transition-transform duration-500 group-hover:-translate-y-1">Fin<span class="text-gradient animate-shine">Up</span></span>
+        <Image src={logo} alt="FinUp" width={300} densities={[1, 2]} class="block h-[clamp(56px,8vw,104px)] w-auto transition-transform duration-500 group-hover:-translate-y-1" />
       </a>
 
       <div class="text-center md:col-start-1 md:row-start-1 md:text-left" data-reveal>
