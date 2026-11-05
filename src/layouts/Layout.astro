@@ -2,7 +2,9 @@
 import "@fontsource-variable/manrope";
 import "../styles/global.css";
 import manropeCyrillic from "@fontsource-variable/manrope/files/manrope-cyrillic-wght-normal.woff2?url";
+import { getImage } from "astro:assets";
 import { appLinks, contact, faqs } from "../data/site";
+import logo from "../assets/logo.png";
 
 interface Props {
   title: string;
@@ -15,6 +17,9 @@ const { title, description, intro = true } = Astro.props;
 // build.format "file" gives /terms.html; the served URL is /terms (cleanUrls)
 const canonical = new URL(Astro.url.pathname.replace(/(index)?\.html$/, ""), Astro.site);
 const ogImage = new URL("/og.png", Astro.site);
+// splash wordmark: the logo cut into F·i·n·U·p (x ranges in the 1047×400 source) so each piece can animate
+const splashLogo = await getImage({ src: logo, width: 640 });
+const splashParts = [[0, 215], [215, 303], [303, 541], [541, 806], [806, 1047]];
 
 const jsonLd = [
   {
@@ -84,9 +89,12 @@ const jsonLd = [
       <div class="pointer-events-none absolute -top-[30%] -left-[20%] size-[70vmax] rounded-full bg-[radial-gradient(circle,rgb(1_174_118/.35),transparent_60%)]"></div>
       <div class="pointer-events-none absolute -right-[25%] -bottom-[35%] size-[70vmax] rounded-full bg-[radial-gradient(circle,rgb(4_44_83/1),transparent_60%)]"></div>
       <div data-loader-inner class="relative flex flex-col items-center gap-9">
-        <div class="flex font-display text-[clamp(64px,11vw,120px)] leading-[1.15] font-bold tracking-[-.05em]">
-          {["F", "i", "n"].map((l, i) => <span data-l style={`--i:${i}`} class="inline-block text-white">{l}</span>)}
-          {["U", "p"].map((l, i) => <span data-l data-up style={`--i:${i + 3}`} class="jump-letter">{l}</span>)}
+        <div class="flex text-[clamp(64px,11vw,120px)]">
+          {splashParts.map(([x, end], i) => (
+            <span data-l data-up={i > 2 ? "" : undefined} style={`--i:${i};width:${(end - x) / 400}em`} class="inline-block h-[1em] overflow-hidden">
+              <img src={splashLogo.src} alt="" width="1047" height="400" style={`margin-left:${-x / 400}em`} class="block h-full w-auto max-w-none" />
+            </span>
+          ))}
         </div>
         <div class="glass h-3 w-60 overflow-hidden rounded-full p-[3px]">
           <span data-bar class="block h-full rounded-full bg-linear-to-r from-green to-mint shadow-[0_0_14px_var(--color-mint)]"></span>
