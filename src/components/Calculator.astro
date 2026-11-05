@@ -27,7 +27,7 @@ const chipOn = "data-[on]:btn-gloss data-[on]:scale-110 data-[on]:border-mint tr
         <input type="range" id="amt" min={initial.min} max={initial.max} step={initial.step} value={initial.max} />
         <div class="mt-2 mb-8 flex justify-between text-xs text-muted tabular-nums"><span id="amt-min">{fmt(initial.min)}</span><span id="amt-max">{fmt(initial.max)}</span></div>
 
-        <div class="flex items-end justify-between gap-4">
+        <div class="flex items-start justify-between gap-4">
           <div>
             <span class="mb-3 block text-sm text-muted">Хугацаа (сараар)</span>
             <div id="terms" class="flex gap-2">
@@ -38,7 +38,7 @@ const chipOn = "data-[on]:btn-gloss data-[on]:scale-110 data-[on]:border-mint tr
           </div>
           <div class="shrink-0 text-right">
             <span class="mb-3 block text-sm whitespace-nowrap text-muted">Хүү (сараар)</span>
-            <b id="rate" class="font-display text-2xl text-mint tabular-nums">{initial.rate}%</b>
+            <b id="rate" class="flex h-10 items-center justify-end font-display text-2xl text-mint tabular-nums">{initial.rate}%</b>
           </div>
         </div>
       </div>
