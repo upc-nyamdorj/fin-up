@@ -110,7 +110,8 @@ const chipOn = "data-[on]:btn-gloss data-[on]:scale-110 data-[on]:border-mint tr
     $("amt-min").textContent = fmt(product.min);
     $("amt-max").textContent = fmt(product.max);
     termsBox.innerHTML = product.terms.map((t) => `<button type="button" data-term="${t}" class="${chipClass}">${t}</button>`).join("");
-    if (!reduce) gsap.from(termsBox.children, { y: 10, opacity: 0, stagger: 0.06, duration: 0.4, ease: "back.out(2)" });
+    // clearProps: gsap leaves inline transforms that would override the active chip's scale-110
+    if (!reduce) gsap.from(termsBox.children, { y: 10, opacity: 0, stagger: 0.06, duration: 0.4, ease: "back.out(2)", clearProps: "transform,translate,scale,opacity" });
     render();
   }
 
